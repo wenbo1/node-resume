@@ -88,11 +88,17 @@ router.post('/register', function(req, res, next) {
 router.get('/resume/:username', function(req, res, next) {
   var data = {username: req.params.username};
   DBComm.find(DBcof, data, (result) => {
-    if (result.length && result[0].userData) {
+    if (result.length && result[0].info && result[0].skills && result[0].profiles && result[0].career && result[0].contact) {
       var data = result[0]
       res.json({
         success: true,
-        data: data.userData
+        data: {
+          info: data.info,
+          skills: data.skills,
+          profiles: data.profiles,
+          career: data.career,
+          contact: data.contact,
+        }
       });
     } else {
       res.json({
@@ -143,11 +149,17 @@ router.post('/login', function(req, res, next) {
 router.get('/getInfo', function(req, res, next) {
   var token = req.headers['x-access-token'];
   DBComm.find(DBcof, {token: token}, (result) => {
-    if (result.length && result[0].userData) {
+    if (result.length && result[0].info && result[0].skills && result[0].profiles && result[0].career && result[0].contact) {
       var data = result[0]
       res.json({
         success: true,
-        data: data.userData
+        data: {
+          info: data.info,
+          skills: data.skills,
+          profiles: data.profiles,
+          career: data.career,
+          contact: data.contact,
+        }
       });
     } else {
       res.json({
