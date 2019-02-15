@@ -3,12 +3,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-var jwtExpress = require('express-jwt');
-
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var res_http = 'http://localhost:8080';
+var res_http = 'http://wenbo.baymaxmall.com';
 var app = express();
 
 var corsOptions = {
@@ -23,13 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// app.use(jwtExpress({ secret: 'user'}).unless({
-//   path: [
-//     '/login',
-//     '/register'
-//   ]
-// }));
 
 app.use('/', usersRouter);
 
