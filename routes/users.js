@@ -34,20 +34,23 @@ router.use(function(req, res, next) {
           return next(); //继续下一步路由
         }
         res.json({ 
-          success: false, 
-          message: '登录信息已过期！' 
+          success: false,
+          token: false,
+          message: '登录信息已过期！请重新登录！' 
         });
       })
     }).catch(() => {
       res.json({
         success: false,
-        message: '无效的token'
+        token: false,
+        message: '登录信息已过期！请重新登录！'
       });
     })
   } else {
     // 没有拿到token 返回错误 
     res.status(403).json({ 
-        success: false, 
+        success: false,
+        token: false,
         message: '没有找到token' 
     });
   }
@@ -84,14 +87,27 @@ router.post('/register', function(req, res, next) {
   })
 });
 
-router.get('/find/:username', function(req, res, next) {
-  var data = {name: req.params.username};
+router.get('/resume/:username', function(req, res, next) {
+  var data = {username: req.params.username};
   DBComm.find(DBcof, data, (result) => {
-    console.log(result);
-    console.log(req.params);
-    var thisToken = Token.getToken(data.name, 'user');
-    console.log(thisToken);
-    res.send(result);
+    if (result.length) {
+      var data = result[0]
+      res.json({
+        success: true,
+        data: {
+          info: data.info,
+          skills: data.skills,
+          profiles: data.profiles,
+          career: data.career,
+          contact: data.contact,
+        }
+      });
+    } else {
+      res.json({
+        success: true,
+        data: null
+      });
+    }
   })
 });
 
@@ -132,16 +148,34 @@ router.post('/login', function(req, res, next) {
   });
 });
 
-router.get('/getUserInfo', function(req, res, next) {
-  token = req.headers['x-access-token'];
+router.get('/getInfo', function(req, res, next) {
+  var token = req.headers['x-access-token'];
   DBComm.find(DBcof, {token: token}, (result) => {
     if (result.length) {
+      var data = result[0]
       res.json({
         success: true,
-        result: result
+        data: {
+          info: data.info,
+          skills: data.skills,
+          profiles: data.profiles,
+          career: data.career,
+          contact: data.contact,
+        }
       });
     }
   })
+});
+
+router.post('/update', function(req, res, next) {
+  var token = req.headers['x-access-token'];
+  var data = req.body.update;
+  DBComm.update(DBcof, {token: token}, data, (result) => {
+    res.json({
+      success: true, 
+      message: '更新成功！'
+    });
+  });
 });
 
 
