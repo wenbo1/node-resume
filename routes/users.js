@@ -75,8 +75,6 @@ router.post('/register', function(req, res, next) {
       token: Token.getToken(username, 'user')
     };
     DBComm.insert(DBcof, data, (result) => {
-      console.log(result);
-      console.log(req.params);
       res.json({
         success: true, 
         result: result,

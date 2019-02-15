@@ -10,7 +10,6 @@ var MongoCom = {
       dbo.collection(DBcof.site).insertOne(data, function(err, res) {
           if (err) throw err;
           callback(res);
-          console.log("文档插入成功");
           db.close();
       });
     });
@@ -22,7 +21,6 @@ var MongoCom = {
       dbo.collection(DBcof.site).find(whereStr).toArray(function(err, res) {
           if (err) throw err;
           callback(res);
-          console.log('查询成功');
           db.close();
       });
     });
@@ -35,7 +33,6 @@ var MongoCom = {
       dbo.collection(DBcof.site).updateOne(whereStr, updateStr, function(err, res) {
           if (err) throw err;
           callback(res);
-          console.log("文档更新成功");
           db.close();
       });
     });
@@ -47,7 +44,6 @@ var MongoCom = {
       dbo.collection(DBcof.site).deleteOne(whereStr, function(err, res) {
           if (err) throw err;
           callback(res);
-          console.log("文档删除成功");
           db.close();
       });
   });
