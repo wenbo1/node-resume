@@ -88,7 +88,7 @@ router.post('/register', function(req, res, next) {
 router.get('/resume/:username', function(req, res, next) {
   var data = {username: req.params.username};
   DBComm.find(DBcof, data, (result) => {
-    if (result.length) {
+    if (result.length && result[0].info) {
       var data = result[0]
       res.json({
         success: true,
@@ -149,7 +149,7 @@ router.post('/login', function(req, res, next) {
 router.get('/getInfo', function(req, res, next) {
   var token = req.headers['x-access-token'];
   DBComm.find(DBcof, {token: token}, (result) => {
-    if (result.length) {
+    if (result.length && result[0].info) {
       var data = result[0]
       res.json({
         success: true,
@@ -160,6 +160,11 @@ router.get('/getInfo', function(req, res, next) {
           career: data.career,
           contact: data.contact,
         }
+      });
+    } else {
+      res.json({
+        success: true,
+        data: null
       });
     }
   })
