@@ -48,10 +48,10 @@ router.use(function(req, res, next) {
     })
   } else {
     // 没有拿到token 返回错误 
-    res.status(403).json({ 
+    res.json({ 
         success: false,
         token: false,
-        message: '没有找到token' 
+        message: '请重新登录！' 
     });
   }
 });
