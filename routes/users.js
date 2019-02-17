@@ -11,7 +11,7 @@ var DBcof = {
 const whiteList = ['/login', '/register'];// 免token验证白名单
 
 router.use(function(req, res, next) {
-  if (whiteList.indexOf(req.url) > -1) {
+  if (whiteList.indexOf(req.url) > -1 || req.url.indexOf('/resume/') > -1) {
     return next();
   }
   // 拿取token
